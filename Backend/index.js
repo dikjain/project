@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import connectDB from './db/db.js';
 import userRoutes from './route/user.route.js';
 import otpRoutes from './route/Otp.route.js';
+import path from 'path';
 dotenv.config();
 
 const app = express();
@@ -20,6 +21,15 @@ app.use(express.json());
 
 app.use("/api/user",userRoutes);
 app.use("/api/otp",otpRoutes);
+
+
+const __dirname1 = path.resolve()
+app.use(express.static(path.join(__dirname1,"../dist")))
+
+app.get("*",(req,res)=>{
+  res.sendFile(path.join(__dirname1,"../dist/index.html")) 
+})
+
 
 
 
