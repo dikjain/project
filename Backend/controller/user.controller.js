@@ -68,5 +68,17 @@ const pickupLine = async (req, res) => {
         res.status(400).send("No pickup lines left");
     }
 }
+const nextMove = async (req, res) => {
+    const { id } = req.body;
 
-export { registeruser, authUser, pickupLine }
+    const user = await Users.findById(id);
+    if (user.nextMove > 0) {
+        user.nextMove -= 1;
+        await user.save();
+        res.status(200).send("Next move updated");
+    } else {
+        res.status(400).send("No next moves left");
+    }
+}
+
+export { registeruser, authUser, pickupLine, nextMove }

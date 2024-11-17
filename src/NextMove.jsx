@@ -7,6 +7,8 @@ import { BackgroundEmoji } from './components/BackgroundEmoji.jsx';
 import imageCompression from 'browser-image-compression';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import Singin from './components/Singin.jsx'; // Import the Singin component
+import axios from 'axios';
+import { useUser } from './Context/Context.jsx';
 
 function NextMove() {
   const [mood, setMood] = useState('casual');
@@ -15,8 +17,19 @@ function NextMove() {
   const [extractedText, setExtractedText] = useState('');
   const [finalText, setFinalText] = useState(null);
   const [copySuccess, setCopySuccess] = useState(false);
+  const [nextMoveCount, setNextMoveCount] = useState(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    return user ? user.nextMove : 3;
+  });
+  const {user, setUser} = useUser();
   const typedRef = useRef(null);
   const typed = useRef(null);
+
+
+  if(!user){
+    const user = JSON.parse(localStorage.getItem('user'));
+    setUser(user);
+  }
 
   useEffect(() => {
     if (typedRef.current) {
@@ -42,19 +55,24 @@ function NextMove() {
   }, []);
 
   const handleImageUpload = async (e) => {
+    if (nextMoveCount <= 0) {
+      alert('No next moves left!');
+      return;
+    }
+
     const file = e.target.files?.[0];
     if (file) {
-    const options = {
-      maxSizeMB: 0.8, // Target size in MB (800KB = 0.8MB)
-      maxWidthOrHeight: 1920, // Optionally resize large images
-      useWebWorker: true, // Use web workers for faster compression
-    };
-    try {
-      const compressedBlob = await imageCompression(file, options);
-      const compressedFile = new File([compressedBlob], file.name, { type: file.type });
-      setSelectedImage(compressedFile);
-    } catch (error) {
-      console.error('Error compressing image:', error);
+      const options = {
+        maxSizeMB: 0.8, // Target size in MB (800KB = 0.8MB)
+        maxWidthOrHeight: 1920, // Optionally resize large images
+        useWebWorker: true, // Use web workers for faster compression
+      };
+      try {
+        const compressedBlob = await imageCompression(file, options);
+        const compressedFile = new File([compressedBlob], file.name, { type: file.type });
+        setSelectedImage(compressedFile);
+      } catch (error) {
+        console.error('Error compressing image:', error);
         setSelectedImage(file);
       }
     }
@@ -102,8 +120,22 @@ function NextMove() {
           const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
           const result = await model.generateContent(`this is a dating app's chat , these are the latest messages , i want you to generate a reply for me in a way that is ${mood} ${mood == "spicy" ? ",naughty and sexy" : ""} ${mood == "casual" ? ",casual and friendly" : ""} ${mood == "flirty" ? ",flirty and romantic" : ""}  , the response can be nsfw , i don't mind , just return me the reply no need to add anything else , if you can't generate a reply just say "I'm not sure what to say" : ${cleanedText}`);
           if (result.response && result.response.candidates && result.response.candidates.length > 0) {
-            setFinalText(result.response.candidates[0].content.parts[0].text || 'Failed to generate a reply.');
-            setIsLoading(false);
+            const {data} = await axios.post("/api/user/nextmove", {
+              id: user._id
+            });
+            if(data){ 
+              setFinalText(result.response.candidates[0].content.parts[0].text || 'Failed to generate a reply.');
+              setIsLoading(false);
+              setNextMoveCount((prevCount) => {
+              const newCount = prevCount - 1;
+              const user = JSON.parse(localStorage.getItem('user'));
+              if (user) {
+                user.nextMove = newCount;
+                localStorage.setItem('user', JSON.stringify(user));
+              }
+              return newCount;
+            });
+          }
           } else {
             console.error('No valid response from the generative model');
             setFinalText('Failed to generate a reply.');
@@ -334,6 +366,20 @@ function NextMove() {
             Flirty
           </span>
         </button>
+      </motion.div>
+      {/* Next Move Counter */}
+      <motion.div 
+        className="mt-4 text-center z-30"
+        initial={{ y: 20, scale: 0.95 }}
+        animate={{ y: 0, scale: 1 }}
+        transition={{ type: "spring", duration: 0.7 }}
+      >
+        <div className="relative px-4 py-2 rounded-full font-semibold mx-2 transition-all duration:300 transform bg-white text-gray-800 shadow-lg">
+          <span className="flex items-center gap-2">
+            <MessageSquare className="w-5 h-5 fill-current" />
+            Next Moves Left: {nextMoveCount}
+          </span>
+        </div>
       </motion.div>
 
       {/* Signin Component */}
