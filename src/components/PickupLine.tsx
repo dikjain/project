@@ -29,7 +29,7 @@ export function PickupLine({ line, isSparkling, lineCount, isSpicy }: PickupLine
           className="w-full"
         >
           <p className="text-xl text-center font-medium text-white">
-            {lineCount >= 20 ? 'Out of lines' : line}
+            {lineCount <= 0 ? 'Out of lines' : line}
           </p>
         </motion.div>
       </AnimatePresence>

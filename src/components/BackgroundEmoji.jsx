@@ -1,11 +1,6 @@
 import { motion } from 'framer-motion';
 
-interface BackgroundEmojiProps {
-  emoji: string;
-  className?: string;
-}
-
-export function BackgroundEmoji({ emoji, className = '' }: BackgroundEmojiProps) {
+export function BackgroundEmoji({ emoji, className = '' }) {
   return (
     <motion.div
       className={`absolute opacity-100 pointer-events-none z-10 select-none ${className}`} // Changed z-index from 50 to 10
