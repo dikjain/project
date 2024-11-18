@@ -144,7 +144,7 @@ function Home() {
           : 'bg-gradient-to-br from-purple-600 via-pink-500 to-blue-500'
       } relative`} // Added relative positioning
     >
-      <div style={{boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)'}} className={`backdrop-blur-md flex items-center justify-between w-[80%] rounded-full mt-[15px] px-8 py-4 fixed top-0 left-1/2 transform -translate-x-1/2 z-20 shadow-black ${
+      <div style={{boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)'}} className={`backdrop-blur-md flex items-center justify-between w-[80%] rounded-full mt-[15px] px-8 py-4 absolute top-0 left-1/2 transform -translate-x-1/2 z-20 shadow-black ${
         isSpicy ? 'bg-black/30' : 'bg-white/30'
       }`}>
         <Link to="/home" className={`text-lg font-semibold ${

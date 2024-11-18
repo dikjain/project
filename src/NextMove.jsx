@@ -199,7 +199,7 @@ function NextMove() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="backdrop-blur-md flex items-center justify-between w-[80%]  transition-all duration-500 ease-in-out rounded-full mt-[15px] px-8 py-4 fixed top-0 left-1/2 transform -translate-x-1/2 z-20 shadow-lg bg-white/30">
+      <div className="backdrop-blur-md flex items-center justify-between w-[80%]  transition-all duration-500 ease-in-out rounded-full mt-[15px] px-8 py-4 absolute top-0 left-1/2 transform -translate-x-1/2 z-20 shadow-lg bg-white/30">
         <Link to="/" className="text-lg font-semibold text-purple-300">
           Home
         </Link>
