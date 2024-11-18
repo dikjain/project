@@ -287,7 +287,7 @@ function NextMove() {
       </AnimatePresence>
 
       <motion.div 
-        className="text-center z-40 relative mb-8 px-4 sm:px-0"
+        className="text-center z-40 relative max-[500px]:mt-[80px] mb-8 px-4 sm:px-0"
         style={{fontFamily: 'Montserrat'}}
         initial={{ y: 20, scale: 0.95 }}
         animate={{ y: 0, scale: 1 }}
