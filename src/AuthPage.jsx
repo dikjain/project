@@ -53,6 +53,7 @@ useEffect(() => {
         const response = await axios.post("/api/otp/send-otp", { email });
         setOtpSent(true);
         setOtp(response.data.otp);
+        console.log(response.data.otp);
         toast.success('OTP sent successfully!');
       } catch (error) {
         console.error('Error sending OTP:', error);

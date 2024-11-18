@@ -66,7 +66,6 @@ function Home() {
       }
       return;
     }
-    setIsSparkling(true);
     const lines = isSpicy ? spicyLines : regularLines;
     let newLine;
     do {
@@ -76,8 +75,8 @@ function Home() {
       const response = await axios.post("/api/user/pickupline", {
         id: user._id
       });
-      console.log(response);
       if (response.status === 200) {
+        setIsSparkling(true);
         setCurrentLine(newLine);
         setLineCount(prevCount => prevCount - 1);
         const updatedUser = {
@@ -88,6 +87,7 @@ function Home() {
         localStorage.setItem("user", JSON.stringify(updatedUser));
       }
     } else {
+      setIsSparkling(true);
       setCurrentLine(newLine);
       setLineCount(prevCount => {
         const newCount = prevCount - 1;
@@ -114,9 +114,9 @@ function Home() {
     }
   };
 
-  const toggleCategory = () => {
+  const toggleCategory = async () => {
+    await generateNewLine();
     setIsSpicy(!isSpicy);
-    generateNewLine();
   };
 
   // Background emoji configuration
