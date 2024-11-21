@@ -1,3 +1,6 @@
+
+# Project Title
+
 FlirtFuel - Smart AI Dating Assistant
 FlirtFuel is your ultimate AI-powered dating assistant, designed to make navigating the dating world effortless and fun. Whether you're trying to respond to a tricky message or looking for the perfect opener, FlirtFuel has you covered with intelligent suggestions tailored to your conversations.
 
