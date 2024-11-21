@@ -1,4 +1,4 @@
-import Lines from "../models/LInes.model.js"; // Corrected the import path to match the file name
+import Lines from "../models/Lines.model.js"; // Corrected the import path to match the file name
 import Users from "../models/User.model.js"; // Import Users model to handle user updates
 
 export const createLine = async (req, res) => {
