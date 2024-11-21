@@ -11,7 +11,6 @@ import axios from 'axios';
 import { useUser } from './Context/Context.jsx';
 import { toast, ToastContainer } from 'react-toastify'; // Import toast and ToastContainer from react-toastify
 import 'react-toastify/dist/ReactToastify.css'; // Import toastify CSS
-import OpenAI from "openai";
 
 function NextMove() {
   const [mood, setMood] = useState('casual');
