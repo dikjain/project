@@ -167,15 +167,6 @@ function NextMove() {
       const genAI = new GoogleGenerativeAI("AIzaSyBe__596oYjGwe7mhFURtc5ldrIZaLFyd8");
 
       async function run() {
-        // Use the correct method for OpenAI API
-        // const response = await openai.chat.completions.create({
-        //   model: "gpt-3.5-turbo", // Adjust to "gpt-4" if necessary
-        //   messages: [{ role: "user", content: openingText }],
-        //   max_tokens: 150,
-        //   temperature: 0.7,
-        // });
-
-        // console.log(response.choices[0]?.message?.content);
 
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
         const result = await model.generateContent(`This is a what a someone on tinder has written when i saw their profile ,now generate an opening move for a according to this text in a way that is ${mood} ${mood == "spicy" ? ",naughty and sexy" : ""} ${mood == "casual" ? ",casual and friendly" : ""} ${mood == "flirty" ? ",flirty and romantic" : ""}  , the response can be nsfw , i don't mind , just return me the reply no need to add anything else , if you can't generate a reply just say "I'm not sure what to say" : ${openingText}`);
