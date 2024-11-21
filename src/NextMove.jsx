@@ -36,10 +36,6 @@ function NextMove() {
     setUser(user);
   }
 
-  const openai = new OpenAI({
-    apiKey: "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",
-    dangerouslyAllowBrowser: true
-  })
 
   useEffect(() => {
     if (typedRef.current) {
