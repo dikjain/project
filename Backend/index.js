@@ -5,6 +5,7 @@ import connectDB from './db/db.js';
 import userRoutes from './route/user.route.js';
 import otpRoutes from './route/otp.route.js';
 import path from 'path';
+import lineRoutes from './route/Line.route.js';
 dotenv.config();
 
 const app = express();
@@ -21,6 +22,7 @@ app.use(express.json());
 
 app.use("/api/user",userRoutes);
 app.use("/api/otp",otpRoutes);
+app.use("/api/line",lineRoutes);
 
 
 const __dirname1 = path.resolve()

@@ -11,6 +11,7 @@ import axios from 'axios';
 import { useUser } from './Context/Context.jsx';
 import { toast, ToastContainer } from 'react-toastify'; // Import toast and ToastContainer from react-toastify
 import 'react-toastify/dist/ReactToastify.css'; // Import toastify CSS
+import OpenAI from "openai";
 
 function NextMove() {
   const [mood, setMood] = useState('casual');
@@ -35,6 +36,11 @@ function NextMove() {
     setUser(user);
   }
 
+  const openai = new OpenAI({
+    apiKey: "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",
+    dangerouslyAllowBrowser: true
+  })
+
   useEffect(() => {
     if (typedRef.current) {
       typed.current = new Typed(typedRef.current, {
@@ -49,7 +55,7 @@ function NextMove() {
         backSpeed: 30,
         backDelay: 1500,
         loop: true,
-        cursorChar: ''
+        cursorChar: '',
       });
     }
 
@@ -157,29 +163,29 @@ function NextMove() {
     } 
   };
 
-  const handleGenerateOpeningMove = async () => {
-    if (!openingText) {
-      toast.error('Please enter some text first!');
-      return;
-    }
-    if (nextMoveCount <= 0) {
-      toast.error('No next moves left!');
-      return;
-    }
 
-    setIsLoading(true);
-    setOpeningMoveText(''); // Clear previous text
-
+  async function generateOpeningMove(mood, openingText, userId) {
     try {
-      // Send the opening text to Google Generative AI
+      setIsLoading(true); // Set loading state to true
+
       const genAI = new GoogleGenerativeAI("AIzaSyBe__596oYjGwe7mhFURtc5ldrIZaLFyd8");
 
       async function run() {
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        // Use the correct method for OpenAI API
+        // const response = await openai.chat.completions.create({
+        //   model: "gpt-3.5-turbo", // Adjust to "gpt-4" if necessary
+        //   messages: [{ role: "user", content: openingText }],
+        //   max_tokens: 150,
+        //   temperature: 0.7,
+        // });
+
+        // console.log(response.choices[0]?.message?.content);
+
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
         const result = await model.generateContent(`This is a what a someone on tinder has written when i saw their profile ,now generate an opening move for a according to this text in a way that is ${mood} ${mood == "spicy" ? ",naughty and sexy" : ""} ${mood == "casual" ? ",casual and friendly" : ""} ${mood == "flirty" ? ",flirty and romantic" : ""}  , the response can be nsfw , i don't mind , just return me the reply no need to add anything else , if you can't generate a reply just say "I'm not sure what to say" : ${openingText}`);
         if (result.response && result.response.candidates && result.response.candidates.length > 0) {
           const {data} = await axios.post("/api/user/nextmove", {
-            id: user._id
+            id: userId
           });
           if(data){
             setOpeningMoveText(result.response.candidates[0].content.parts[0].text || 'Failed to generate a reply.');
@@ -197,16 +203,19 @@ function NextMove() {
         } else {
           console.error('No valid response from the generative model');
           setOpeningMoveText('Failed to generate a reply.');
+          setIsLoading(false); // Set loading state to false
         }
       }
       
       run();
     } catch (error) {
-      console.error('Error:', error);
-      setOpeningMoveText('Failed to generate a reply.');
+      console.error("Error generating opening move:", error.message);
+      setOpeningMoveText("Failed to generate a reply."); // Update the state with the error message
+      setIsLoading(false); // Set loading state to false
     }
-  };
+  }
 
+  // Example usage
   const getMoodColor = () => {
     switch (mood) {
       case 'spicy':
@@ -332,21 +341,26 @@ function NextMove() {
           animate={{ y: 0, scale: 1 }}
           transition={{ type: "spring", duration: 0.7 }}
         >
-          {!openingMoveText && <textarea
+          {!openingMoveText && !isLoading && <textarea
             className="w-full p-5 mb-4 rounded-lg bg-white/20 text-white placeholder-white/50"
             rows="6"
             placeholder="Enter your opening text here..."
             value={openingText}
             onChange={(e) => setOpeningText(e.target.value)}
           />}
-          {!openingMoveText && <button
-            onClick={handleGenerateOpeningMove}
+          {!openingMoveText && !isLoading && <button
+            onClick={() => generateOpeningMove(mood, openingText, user._id)}
             className="bg-white text-gray-800 px-8 py-3 rounded-full font-semibold flex items-center gap-2 mx-auto transform transition-all hover:scale-105 hover:shadow-md"
             disabled={isLoading}
           >
             <MessageSquare className="w-5 h-5" />
             {isLoading ? 'Generating...' : 'Generate Opening Move'}
           </button>}
+          {isLoading && (
+            <div className="flex items-center justify-center mt-4">
+              <div className="loader"></div>
+            </div>
+          )}
           {openingMoveText && (
             <motion.div 
               className="w-full max-w-2xl z-30 text-center mt-4"

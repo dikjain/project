@@ -14,9 +14,7 @@ import axios from 'axios';
 
 function Home() {
   const [isSpicy, setIsSpicy] = useState(false);
-  const [currentLine, setCurrentLine] = useState(() => 
-    regularLines[Math.floor(Math.random() * regularLines.length)]
-  );
+  const [currentLine, setCurrentLine] = useState("click to generate");
   const { user, setUser } = useUser();
   const [isSparkling, setIsSparkling] = useState(false);
   const [lineCount, setLineCount] = useState(() => {
@@ -156,6 +154,11 @@ function Home() {
           isSpicy ? 'text-red-300' : 'text-purple-300'
         }`}>
           Next Move
+        </Link>
+        <Link to="/userlines" className={`text-lg font-semibold ${
+          isSpicy ? 'text-red-300' : 'text-purple-300'
+        }`}>
+          Lines
         </Link>
       </div>
 

@@ -28,6 +28,16 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 3,
     },
+    likedLines: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Lines',
+        default: [],
+    }],
+    dislikedLines: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Lines',
+        default: [],
+    }],
 }, {timestamps: true});
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
