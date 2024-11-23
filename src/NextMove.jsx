@@ -260,7 +260,7 @@ function NextMove() {
     >
       <ToastContainer /> {/* Add ToastContainer here */}
       <div className="backdrop-blur-md flex items-center justify-between w-[80%]  transition-all duration-500 ease-in-out rounded-full mt-[15px] px-8 py-4 absolute top-0 left-1/2 transform -translate-x-1/2 z-20 shadow-lg bg-white/30">
-        <Link to="/" className="text-lg font-semibold text-purple-300">
+        <Link to="/home" className="text-lg font-semibold text-purple-300">
           Home
         </Link>
         <a href="#" className="text-lg font-semibold text-purple-300">

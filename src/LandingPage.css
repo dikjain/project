@@ -1,0 +1,48 @@
+
+.boxin{
+    transition: all 1.5s ease;
+}
+.box{
+    transition: all 0.3s ease;
+}
+
+#box1{
+    background: linear-gradient(to right, #ef4444, #f97316); /* spicy */
+    box-shadow: 0 0 10px 0 rgba(239, 68, 68, 0.5), 0 0 20px 0 rgba(249, 115, 22, 0.5);
+}
+#box2{
+    background: linear-gradient(to right, #3b82f6, #8b5cf6); /* casual */
+    box-shadow: 0 0 10px 0 rgba(59, 130, 246, 0.5), 0 0 20px 0 rgba(139, 92, 246, 0.5);
+}
+#box4{
+    background: linear-gradient(to right, #ec4899, #f43f5e); /* flirty */
+    box-shadow: 0 0 10px 0 rgba(236, 72, 153, 0.5), 0 0 20px 0 rgba(244, 63, 94, 0.5);
+}
+#box3{
+    background: linear-gradient(to right, #1e3a8a, #3b82f6); /* default */
+    box-shadow: 0 0 10px 0 rgba(30, 58, 138, 0.5), 0 0 20px 0 rgba(59, 130, 246, 0.5);
+}
+.box:hover{
+    scale: 1.02;
+}
+
+.boxin1:hover{
+    transition: all 0.3s ease;
+    background: #f97316; /* spicy */
+}
+
+.boxin2:hover{
+    transition: all 0.3s ease;
+    background: #8b5cf6; /* spicy */
+}
+
+.boxin4:hover{
+    transition: all 0.3s ease;
+    background: #f43f5e; /* spicy */
+}
+
+.boxin3:hover{
+    transition: all 0.3s ease;
+    background: #3b82f6; /* spicy */
+}
+

@@ -16,7 +16,7 @@ function Singin({ initialOpen = false }) {
 
   const handleLogout = () => {
     setUser(null);
-    navigate("/");
+    navigate("/auth");
     localStorage.removeItem("user");
   };
 
