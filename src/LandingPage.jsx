@@ -48,7 +48,7 @@ function LandingPage() {
         stagger: 0.5,
         scrollTrigger: {
           trigger: ".iuoop",
-          start: "30% 60%",
+          start: "30% 40%",
           end: "40% 10%",
           scrub: true
         }
@@ -64,8 +64,24 @@ function LandingPage() {
         stagger: 1,
         scrollTrigger: {
           trigger: ".iuoop",
-          start: "30% 65%",
+          start: "30% 50%",
           end: "40% 15%",
+          scrub: true,
+        }
+      }
+    );
+    gsap.fromTo(
+      ".iuoop",
+      { opacity: 0, y: 100 },
+      {
+        opacity: 1,
+        duration: 1,
+        y: 0,
+        stagger: 1,
+        scrollTrigger: {
+          trigger: ".iuoop",
+          start: "30% 60%",
+          end: "40% 20%",
           scrub: true,
         }
       }
@@ -148,8 +164,8 @@ function LandingPage() {
         </motion.div>
       </div>
       <div id="pg1" className='flex items-center justify-center w-screen h-screen min-h-fit overflow-hidden p-4 md:p-0'>
-        <div id="midbox" className='flex mt-[150px] max-[500px]:mt-[10px] flex-wrap w-full md:w-[60vw] gap-[12px] items-center justify-center p-5 h-[60vh] rounded-xl'>
-          <div id="box1" className='flex w-full md:w-[69%] h-1/2 z-20  max-[500px]:h-[150px]  rounded-xl bg-black box relative items-center justify-center'>
+        <div id="midbox" className='flex mt-[150px] max-[500px]:mt-[10px] flex-wrap w-full md:w-[60vw] gap-[12px] items-center justify-center p-5 h-[60vh] min-h-fit   rounded-xl'>
+          <div id="box1" className='flex w-full md:w-[69%] h-1/2 z-20  max-[500px]:h-[130px]  rounded-xl bg-black box relative items-center justify-center'>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -162,7 +178,7 @@ function LandingPage() {
               </div>
             </motion.div>
           </div>
-          <div id="box2" className='flex w-full md:w-[29%] h-1/2 z-20  max-[500px]:h-[150px] rounded-xl bg-black box relative items-center justify-center'>
+          <div id="box2" className='flex w-full md:w-[29%] h-1/2 z-20  max-[500px]:h-[130px] rounded-xl bg-black box relative items-center justify-center'>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -175,7 +191,7 @@ function LandingPage() {
               </div>
             </motion.div>
           </div>
-          <div id="box3" className='flex w-full md:w-[29%] h-1/2  max-[500px]:h-[150px] rounded-xl bg-gradient-to-r from-blue-500 to-teal-500 box relative items-center justify-center'>
+          <div id="box3" className='flex w-full md:w-[29%] h-1/2  max-[500px]:h-[130px] rounded-xl bg-gradient-to-r from-blue-500 to-teal-500 box relative items-center justify-center'>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -188,7 +204,7 @@ function LandingPage() {
               </div>
             </motion.div>
           </div>
-          <div id="box4" className='flex w-full md:w-[69%] h-1/2  max-[500px]:h-[150px] rounded-xl bg-gradient-to-r from-blue-500 to-teal-500 box relative items-center justify-center'>
+          <div id="box4" className='flex w-full md:w-[69%] h-1/2  max-[500px]:h-[130px] rounded-xl bg-gradient-to-r from-blue-500 to-teal-500 box relative items-center justify-center'>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -212,6 +228,7 @@ function LandingPage() {
           <p className="text-sm text-white/80">Need the perfect pickup line? Choose your mood—sweet or spicy—and let <span className="text-blue-400">FlirtMaster AI</span> craft a clever line to impress, charm, or add a little sizzle to your conversations!</p>
         </div>
         <div className='w-[1px] h-40 bg-white/20 hidden md:block'></div>
+        <div className='w-full h-[1px] bg-white/20 hidden max-[768px]:block '></div>
         <div className='flex flex-col qt items-center w-full md:w-1/3 p-5 text-center text-white'>
           <div className="flex items-center">
             <MessageCircle className="text-green-500 mx-3 mb-2" size={32}  />
@@ -220,6 +237,7 @@ function LandingPage() {
           <p className="text-sm text-white/80">Stuck on what to say? Our AI analyzes your conversation and mood to provide <span className="text-yellow-400">tailored suggestions</span>, helping you keep the chat flowing smoothly and confidently.</p>
         </div>
         <div className='w-[1px] h-40 bg-white/20 hidden md:block'></div>
+        <div className='w-full h-[1px] bg-white/20 hidden max-[768px]:block '></div>
         <div className='flex flex-col qt  items-center w-full md:w-1/3 p-5 text-center text-white'>
           <div className="flex items-center">
             <Sparkles className="text-yellow-500 mx-3 mb-2" size={32}  />
@@ -280,9 +298,9 @@ function LandingPage() {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1.2 }}
-            className="mt-16 text-center"
+            className="mt-16 text-center max-[500px]:opacity-[0]"
           >
-            <p className="text-2xl font-bold text-white">
+            <p className="text-2xl font-bold text-white  max-[500px]:opacity-[0]">
               Ready to transform your <span className='text-blue-400 iuoop' style={{textShadow: "0 0 10px rgba(0,0,255,0.5), 0 0 20px rgba(0,0,255,0.3)"}}>conversations</span>?
             </p>
           </motion.div>
