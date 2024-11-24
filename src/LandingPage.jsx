@@ -249,7 +249,7 @@ function LandingPage() {
               color: "#ff00c8", 
               textShadow: "0 0 10px rgba(255,0,200,0.5), 0 0 20px rgba(255,0,200,0.3)"
             }} className="iuoop">Conversation</span>
-            <img src={'./love-message-unscreen.gif'} className='w-[80px] md:w-[100px] bg-transparent absolute top-0 translate-x-[-3vw] h-[80px] md:h-[100px] object-cover' />
+            <img src={'https://i.imghippo.com/files/YUCq1398Zfc.gif'} className='w-[80px] md:w-[100px] bg-transparent absolute top-0 translate-x-[-3vw] h-[80px] md:h-[100px] object-cover' />
           </motion.h2>
           
           <div className="flex flex-col lg:flex-row items-center justify-center gap-8 md:gap-16 w-full">
@@ -270,7 +270,7 @@ function LandingPage() {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.8 }}
-              src={'./istockphoto-1301605100-1024x1024-removebg-preview.png'} 
+              src="https://i.imghippo.com/files/sBD1436ko.png"
               alt="AI Communication Assistant" 
               className='w-[60vw] md:w-[35vw] max-w-md object-cover hover:scale-110 transition-transform duration-500 filter drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]' 
             />
