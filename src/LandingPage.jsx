@@ -164,7 +164,7 @@ function LandingPage() {
         </motion.div>
       </div>
       <div id="pg1" className='flex items-center justify-center w-screen h-screen min-h-fit overflow-hidden p-4 md:p-0'>
-        <div id="midbox" className='flex mt-[150px] max-[500px]:mt-[100px] flex-wrap w-full md:w-[60vw] gap-[12px] items-center justify-center p-5  min-h-fit   rounded-xl'>
+        <div id="midbox" className='flex mt-[150px]  flex-wrap w-full md:w-[60vw] gap-[12px] items-center justify-center p-5  min-h-fit   rounded-xl'>
           <div id="box1" className='flex w-full md:w-[69%] h-1/2 z-20  max-[500px]:h-[130px]  rounded-xl bg-black box relative items-center justify-center'>
             <motion.div
               initial={{ opacity: 0 }}
