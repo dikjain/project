@@ -1,6 +1,10 @@
 
+*::-webkit-scrollbar{
+    display: none;
+}
+
 .boxin{
-    transition: all 1.5s ease;
+    transition: all 2.2s ease;
 }
 .box{
     transition: all 0.3s ease;
@@ -46,3 +50,15 @@
     background: #3b82f6; /* spicy */
 }
 
+.pg2box1{
+    box-shadow: 0 0 10px 0 rgba(239, 68, 68, 0.5), 0 0 20px 0 rgba(239, 68, 68, 0.5);
+}
+.pg2box2{
+    box-shadow: 0 0 10px 0 rgba(59, 130, 246, 0.5), 0 0 20px 0 rgba(59, 130, 246, 0.5);
+}
+.pg2box3{
+    box-shadow: 0 0 10px 0 rgba(30, 58, 138, 0.5), 0 0 20px 0 rgba(30, 58, 138, 0.5);
+}
+.pg2box4{
+    box-shadow: 0 0 10px 0 rgba(234, 179, 8, 0.5), 0 0 20px 0 rgba(234, 179, 8, 0.5);
+}
