@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { useUser } from '../Context/Context'; // Assuming the context is in this path
+import { useUser } from '../Context/Context'; 
 import { useNavigate } from 'react-router-dom';
 
 function Singin({ initialOpen = false }) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(initialOpen);
-  const { user, setUser } = useUser(); // Access user context
+  const { user, setUser } = useUser();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);

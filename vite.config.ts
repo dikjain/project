@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://project-t80k.onrender.com/',  // Backend API server
+        target: 'http://localhost:3000/',  // Backend API server
         changeOrigin: true,
         rewrite: (path) => path.replace(/^/, ''),  // Optionally remove the '/api' prefix
       },

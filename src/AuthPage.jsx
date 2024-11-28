@@ -107,7 +107,6 @@ useEffect(() => {
       toast.success('Login successful!');
       localStorage.setItem('user', JSON.stringify(response.data));
       navigate('/home');
-      // Handle successful login, e.g., redirect to another page or update state
     } catch (error) {
       console.error('Error during login:', error);
       toast.error(`Failed to log in. Please try again. ${error.response?.data?.message || error.message}`);
@@ -131,7 +130,6 @@ useEffect(() => {
       animate={{ opacity: 1 }}
     >
       <ToastContainer />
-      {/* Animated Background Emojis */}
       <AnimatePresence>
         {backgroundEmojis.map((emoji, index) => (
           <motion.div
@@ -196,7 +194,7 @@ useEffect(() => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="space-y-2" // Decreased the space between inputs
+            className="space-y-2"
           >
             {isLogin ? (
               <>

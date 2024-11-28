@@ -5,12 +5,12 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BackgroundEmoji } from './components/BackgroundEmoji.jsx';
 import imageCompression from 'browser-image-compression';
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import Singin from './components/Singin.jsx'; // Import the Singin component
+import Groq from 'groq-sdk';
+import Singin from './components/Singin.jsx';
 import axios from 'axios';
 import { useUser } from './Context/Context.jsx';
-import { toast, ToastContainer } from 'react-toastify'; // Import toast and ToastContainer from react-toastify
-import 'react-toastify/dist/ReactToastify.css'; // Import toastify CSS
+import { toast, ToastContainer } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css'; 
 
 function NextMove() {
   const [mood, setMood] = useState('casual');
@@ -34,7 +34,6 @@ function NextMove() {
     const user = JSON.parse(localStorage.getItem('user'));
     setUser(user);
   }
-
 
   useEffect(() => {
     if (typedRef.current) {
@@ -68,9 +67,9 @@ function NextMove() {
     const file = e.target.files?.[0];
     if (file) {
       const options = {
-        maxSizeMB: 0.8, // Target size in MB (800KB = 0.8MB)
-        maxWidthOrHeight: 1920, // Optionally resize large images
-        useWebWorker: true, // Use web workers for faster compression
+        maxSizeMB: 0.8,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
       };
       try {
         const compressedBlob = await imageCompression(file, options);
@@ -90,15 +89,14 @@ function NextMove() {
     }
 
     setIsLoading(true);
-    setExtractedText(''); // Clear previous text
+    setExtractedText('');
 
     const formData = new FormData();
     formData.append('file', selectedImage);
-    formData.append('apikey', 'K83586665988957'); // Replace with your actual API key
-    formData.append('language', 'eng'); // Specify the language
+    formData.append('apikey', 'K83586665988957'); 
+    formData.append('language', 'eng'); 
 
     try {
-      // Make a POST request to the OCR Space API
       const response = await fetch('https://api.ocr.space/parse/image', {
         method: 'POST',
         body: formData,
@@ -108,74 +106,42 @@ function NextMove() {
       if (data.OCRExitCode === 1 && data.ParsedResults && data.ParsedResults.length > 0) {
         const parsedText = data.ParsedResults[0].ParsedText;
         
-        // Clean and structure the extracted text
         const cleanedText = parsedText
-          .split('\n') // Split into lines
-          .map((line) => line.trim()) // Trim whitespace from each line
-          .filter((line) => line) // Remove empty lines
-          .join('\n'); // Join cleaned lines back together
+          .split('\n')
+          .map((line) => line.trim())
+          .filter((line) => line)
+          .join('\n');
 
         setExtractedText(cleanedText);
 
-        // Send the cleaned text to Google Generative AI
-
-        const genAI = new GoogleGenerativeAI("AIzaSyBe__596oYjGwe7mhFURtc5ldrIZaLFyd8");
-
-        async function run() {
-          const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
-          const result = await model.generateContent(`this is a dating app's chat , these are the latest messages , i want you to generate a reply for me in a way that is ${mood} ${mood == "spicy" ? ",naughty and sexy" : ""} ${mood == "casual" ? ",casual and friendly" : ""} ${mood == "flirty" ? ",flirty and romantic" : ""}  , the response can be nsfw , i don't mind , just return me the reply no need to add anything else , if you can't generate a reply just say "I'm not sure what to say" : ${cleanedText}`);
-          if (result.response && result.response.candidates && result.response.candidates.length > 0) {
-            const {data} = await axios.post("/api/user/nextmove", {
-              id: user._id
-            });
-            if(data){ 
-              setFinalText(result.response.candidates[0].content.parts[0].text || 'Failed to generate a reply.');
-              setIsLoading(false);
-              setNextMoveCount((prevCount) => {
-              const newCount = prevCount - 1;
-              const user = JSON.parse(localStorage.getItem('user'));
-              if (user) {
-                user.nextMove = newCount;
-                localStorage.setItem('user', JSON.stringify(user));
-              }
-              return newCount;
-            });
-          }
-          } else {
-            console.error('No valid response from the generative model');
-            setFinalText('Failed to generate a reply.');
-          }
-          
-        }
-        
-        run();
-      } else {
-        setExtractedText('Something went wrong...');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      setExtractedText('Failed to extract text.');
-    } 
-  };
-
-
-  async function generateOpeningMove(mood, openingText, userId) {
-    try {
-      setIsLoading(true); // Set loading state to true
-
-      const genAI = new GoogleGenerativeAI("AIzaSyBe__596oYjGwe7mhFURtc5ldrIZaLFyd8");
-
-      async function run() {
-
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
-        const result = await model.generateContent(`This is a what a someone on tinder has written when i saw their profile ,now generate an opening move for a according to this text in a way that is ${mood} ${mood == "spicy" ? ",naughty and sexy" : ""} ${mood == "casual" ? ",casual and friendly" : ""} ${mood == "flirty" ? ",flirty and romantic" : ""}  , the response can be nsfw , i don't mind , just return me the reply no need to add anything else , if you can't generate a reply just say "I'm not sure what to say" : ${openingText}`);
-        if (result.response && result.response.candidates && result.response.candidates.length > 0) {
-          const {data} = await axios.post("/api/user/nextmove", {
-            id: userId
+        try {
+          const groq = new Groq({
+            apiKey: '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',
+            dangerouslyAllowBrowser: true
           });
-          if(data){
-            setOpeningMoveText(result.response.candidates[0].content.parts[0].text || 'Failed to generate a reply.');
-            setIsLoading(false);
+          const prompt = `this is a dating app's chat , these are the latest messages , i want you to generate a reply for me in a way that is ${mood} ${mood == "spicy" ? ",naughty and sexy" : ""} ${mood == "casual" ? ",casual and friendly" : ""} ${mood == "flirty" ? ",flirty and romantic" : ""}  , the response can be nsfw , i don't mind , just return me the reply no need to add anything else , if you can't generate a reply just say "I'm not sure what to say" : ${cleanedText}`;
+          
+          const chatCompletion = await groq.chat.completions.create({
+            messages: [{role: "user", content: prompt}],
+            model: "llama3-8b-8192",
+            temperature: 1,
+            max_tokens: 1024,
+            top_p: 1,
+            stream: true,
+            stop: null
+          });
+
+          let responseText = '';
+          for await (const chunk of chatCompletion) {
+            responseText += chunk.choices[0]?.delta?.content || '';
+          }
+
+          const {data} = await axios.post("/api/user/nextmove", {
+            id: user._id
+          });
+            
+          if(data){ 
+            setFinalText(responseText || 'Failed to generate a reply.');
             setNextMoveCount((prevCount) => {
               const newCount = prevCount - 1;
               const user = JSON.parse(localStorage.getItem('user'));
@@ -186,22 +152,87 @@ function NextMove() {
               return newCount;
             });
           }
-        } else {
-          console.error('No valid response from the generative model');
-          setOpeningMoveText('Failed to generate a reply.');
-          setIsLoading(false); // Set loading state to false
+        } catch (error) {
+          if (error.message.includes('429')) {
+            toast.error('Rate limit exceeded. Please try again in a minute.');
+          } else {
+            toast.error('Error generating response');
+          }
+          console.error('AI Error:', error);
+          setFinalText('Failed to generate a reply.');
         }
+      } else {
+        toast.error('Failed to extract text from image');
+        setExtractedText('Something went wrong...');
       }
-      
-      run();
     } catch (error) {
+      toast.error('Error processing image');
+      console.error('Error:', error);
+      setExtractedText('Failed to extract text.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  async function generateOpeningMove(mood, openingText, userId) {
+    if (!openingText.trim()) {
+      toast.error('Please enter some text first!');
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const groq = new Groq({
+        apiKey: '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',
+        dangerouslyAllowBrowser: true
+      });
+      const prompt = `This is a what a someone on tinder has written when i saw their profile ,now generate an opening move for a according to this text in a way that is ${mood} ${mood == "spicy" ? ",naughty and sexy" : ""} ${mood == "casual" ? ",casual and friendly" : ""} ${mood == "flirty" ? ",flirty and romantic" : ""}  , the response can be nsfw , i don't mind , just return me the reply no need to add anything else , if you can't generate a reply just say "I'm not sure what to say" : ${openingText}`;
+      
+      const chatCompletion = await groq.chat.completions.create({
+        messages: [{role: "user", content: prompt}],
+        model: "llama3-8b-8192", 
+        temperature: 1,
+        max_tokens: 1024,
+        top_p: 1,
+        stream: true,
+        stop: null
+      });
+
+      let responseText = '';
+      for await (const chunk of chatCompletion) {
+        responseText += chunk.choices[0]?.delta?.content || '';
+      }
+
+      const {data} = await axios.post("/api/user/nextmove", {
+        id: userId
+      });
+        
+      if(data){
+        setOpeningMoveText(responseText || 'Failed to generate a reply.');
+        setNextMoveCount((prevCount) => {
+          const newCount = prevCount - 1;
+          const user = JSON.parse(localStorage.getItem('user'));
+          if (user) {
+            user.nextMove = newCount;
+            localStorage.setItem('user', JSON.stringify(user));
+          }
+          return newCount;
+        });
+      }
+    } catch (error) {
+      if (error.message.includes('429')) {
+        toast.error('Rate limit exceeded. Please try again in a minute.');
+      } else {
+        toast.error('Error generating opening move');
+      }
       console.error("Error generating opening move:", error.message);
-      setOpeningMoveText("Failed to generate a reply."); // Update the state with the error message
-      setIsLoading(false); // Set loading state to false
+      setOpeningMoveText("Failed to generate a reply.");
+    } finally {
+      setIsLoading(false);
     }
   }
 
-  // Example usage
   const getMoodColor = () => {
     switch (mood) {
       case 'spicy':
@@ -223,7 +254,6 @@ function NextMove() {
     }
   };
 
-  // Background emoji configuration
   const backgroundEmojis = useMemo(() => {
     switch (mood) {
       case 'spicy':
@@ -237,7 +267,7 @@ function NextMove() {
 
   const emojiPositions = useMemo(() => {
     return backgroundEmojis.map(() => ({
-      left: `${Math.random() * 100}%`, // Changed to 100% to allow emojis anywhere on the screen
+      left: `${Math.random() * 100}%`,
       top: `${Math.random() * 100}%`,
     }));
   }, [backgroundEmojis]);
@@ -246,7 +276,7 @@ function NextMove() {
     if (finalText) {
       navigator.clipboard.writeText(finalText).then(() => {
         setCopySuccess(true);
-        setTimeout(() => setCopySuccess(false), 2000); // Reset after 2 seconds
+        setTimeout(() => setCopySuccess(false), 2000);
       });
     }
   };
@@ -258,7 +288,7 @@ function NextMove() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <ToastContainer /> {/* Add ToastContainer here */}
+      <ToastContainer />
       <div className="backdrop-blur-md flex items-center justify-between w-[80%]  transition-all duration-500 ease-in-out rounded-full mt-[15px] px-8 py-4 absolute top-0 left-1/2 transform -translate-x-1/2 z-20 shadow-lg bg-white/30">
         <Link to="/home" className="text-lg font-semibold text-purple-300">
           Home
@@ -268,7 +298,6 @@ function NextMove() {
         </a>
       </div>
 
-      {/* Animated Background Emojis */}
       <AnimatePresence>
         {backgroundEmojis.map((emoji, index) => (
           <motion.div
@@ -340,7 +369,7 @@ function NextMove() {
             disabled={isLoading}
           >
             <MessageSquare className="w-5 h-5" />
-            {isLoading ? 'Generating...' : 'Generate Opening Move'}
+            {isLoading ? 'Rizzing it up, hang tight!' : 'Unleash the rizz!'}
           </button>}
           {isLoading && (
             <div className="flex items-center justify-center mt-4">
@@ -470,7 +499,6 @@ function NextMove() {
         </>
       )}
 
-      {/* Mood Toggler */}
       <motion.div 
         className="mt-8 text-center z-30"
         initial={{ y: 20, scale: 0.95 }}
@@ -517,7 +545,6 @@ function NextMove() {
           </span>
         </button>
       </motion.div>
-      {/* Next Move Counter */}
       <motion.div 
         className="mt-4 text-center z-30"
         initial={{ y: 20, scale: 0.95 }}
@@ -532,7 +559,6 @@ function NextMove() {
         </div>
       </motion.div>
 
-      {/* Signin Component */}
       <div className="fixed bottom-4 right-4 z-50">
         <Singin />
       </div>

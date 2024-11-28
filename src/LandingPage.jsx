@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './LandingPage.css';
 import { motion } from 'framer-motion';
-import { Menu, LogIn, UserPlus, Smile, ArrowRight, Heart, Zap, MessageCircle, Sparkles } from 'lucide-react'; // Added new icons
+import { Menu, LogIn, UserPlus, Smile, ArrowRight, Heart, Zap, MessageCircle, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -100,8 +100,8 @@ function LandingPage() {
           return gradients[nextIndex];
         });
         setHeadingOpacity(1);
-      }, 500); // Change opacity to 0 for 0.5 seconds before changing gradient
-    }, 5000); // Change gradient every 5 seconds
+      }, 500);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, []);
@@ -254,8 +254,8 @@ function LandingPage() {
             transition={{ duration: 1, ease: "easeOut" }}
             className="text-4xl md:text-6xl font-extrabold mb-12 text-center relative text-white"
             style={{ 
-              fontFamily: "'Montserrat', sans-serif", // Changed to Montserrat for better readability and modern look
-              letterSpacing: "-0.02em", // Added slight letter spacing adjustment
+              fontFamily: "'Montserrat', sans-serif",
+              letterSpacing: "-0.02em",
               textShadow: "0 0 10px rgba(255,255,255,0.5), 0 0 20px rgba(255,255,255,0.3)",
               color: "#fff"
             }}

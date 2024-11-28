@@ -8,7 +8,7 @@ import { CategoryToggle } from './components/CategoryToggle';
 import { BackgroundEmoji } from './components/BackgroundEmoji';
 import { regularLines, spicyLines } from './data/pickupLines';
 import { Link, useNavigate } from 'react-router-dom';
-import Singin from './components/Singin'; // Import the Singin component
+import Singin from './components/Singin';
 import { useUser } from './Context/Context';
 import axios from 'axios';
 
@@ -117,14 +117,12 @@ function Home() {
     setIsSpicy(!isSpicy);
   };
 
-  // Background emoji configuration
   const backgroundEmojis = useMemo(() => {
     return isSpicy 
       ? ['💋', '🔥', '😘', '💦', '🥵', '🤤', '👙', '🍷', '🍆', '🍑']
       : ['💫', '⭐', '💝', '🌟', '💕', '✨', '🌸', '🦋', '🌈', '💫'];
   }, [isSpicy]);
 
-  // Pre-calculate emoji positions to prevent them from changing
   const emojiPositions = useMemo(() => {
     return backgroundEmojis.map(() => ({
       left: `${Math.random() * 100}%`,
@@ -140,7 +138,7 @@ function Home() {
         isSpicy 
           ? 'bg-gradient-to-br from-red-600 via-pink-600 to-purple-600'
           : 'bg-gradient-to-br from-purple-600 via-pink-500 to-blue-500'
-      } relative`} // Added relative positioning
+      } relative`}
     >
       <div style={{boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)'}} className={`backdrop-blur-md flex items-center justify-between w-[80%] rounded-full mt-[15px] px-8 py-4 absolute top-0 left-1/2 transform -translate-x-1/2 z-20 shadow-black ${
         isSpicy ? 'bg-black/30' : 'bg-white/30'
@@ -162,8 +160,6 @@ function Home() {
         </Link>
       </div>
 
-
-      {/* Animated Background Emojis */}
       <AnimatePresence>
         {backgroundEmojis.map((emoji, index) => (
           <motion.div
@@ -234,12 +230,10 @@ function Home() {
         </div>
       </motion.div>
 
-      {/* Signin Component */}
       <div className="fixed bottom-4 right-4 z-50">
         <Singin />
       </div>
 
-      {/* Popup for more lines */}
       {showPopup && (
         <AnimatePresence>
           {showPopup && (
