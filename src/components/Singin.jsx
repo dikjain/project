@@ -4,11 +4,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useUser } from '../Context/Context'; 
 import { useNavigate } from 'react-router-dom';
+import Membership from './Membership';
 
 function Singin({ initialOpen = false }) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(initialOpen);
   const { user, setUser } = useUser();
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to control the Membership modal
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -38,9 +40,9 @@ function Singin({ initialOpen = false }) {
                 <button onClick={handleLogout} className="block px-4 py-2 text-white bg-white/20 hover:bg-white/40 rounded-md">
                   Logout
                 </button>
-                <Link to="/membership" className="block px-4 py-2 text-white hover:bg-white/40 rounded-md">
+                <button onClick={() => setIsModalOpen(true)} className="block px-4 py-2 text-white hover:bg-white/40 rounded-md">
                   Membership
-                </Link>
+                </button>
               </>
             ) : (
               <>
@@ -52,6 +54,7 @@ function Singin({ initialOpen = false }) {
           </motion.div>
         )}
       </AnimatePresence>
+      {isModalOpen && <Membership />} {/* Render the Membership component when modal is open */}
     </div>
   );
 } 

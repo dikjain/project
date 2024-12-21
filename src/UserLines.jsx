@@ -6,6 +6,7 @@ import { useUser } from './Context/Context.jsx';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate, Link } from 'react-router-dom';
+import Singin from './components/Singin.jsx'; // Import Singin component
 
 
 function UserLines() {
@@ -40,37 +41,10 @@ function UserLines() {
     fetchAllLines();
   }, [user, setUser]);
 
-  const handleLike = async (lineId) => {
-    if (!user) {
-      navigate('/');
-      return;
-    }
-    try {
-      const response = await axios.post(`/api/line/like/${lineId}/${user._id}`);
-      setLines(lines.map(line => line._id === lineId ? response.data : line));
-      toast.success('Line liked!');
-    } catch (err) {
-      toast.error('Failed to like the line');
-    }
-  };
-
-  const handleDislike = async (lineId) => {
-    if (!user) {
-      navigate('/');
-      return;
-    }
-    try {
-      const response = await axios.post(`/api/line/dislike/${lineId}/${user._id}`);
-      setLines(lines.map(line => line._id === lineId ? response.data : line));
-      toast.success('Line disliked!');
-    } catch (err) {
-      toast.error('Failed to dislike the line');
-    }
-  };
 
   const handleLikeDislike = async (lineId, action) => {
     if (!user) {
-      navigate('/');
+      navigate('/auth');
       return;
     }
     try {
@@ -97,7 +71,7 @@ function UserLines() {
       setLines(lines.filter(line => line._id !== lineId));
       toast.success('Line deleted!');
     } catch (err) {
-      toast.error('Failed to delete the line');
+      navigate('/');
     }
   };
 
@@ -173,7 +147,7 @@ function UserLines() {
       >
         <div className="backdrop-blur-md bg-white/10 rounded-2xl p-8 shadow-xl">
           <div className="flex items-center justify-between mb-8">
-            <h1 className="text-3xl font-bold text-white">My Lines</h1>
+            <h1 className="text-3xl font-bold text-white">Lines By Users</h1>
             <div className="flex items-center gap-2 bg-white/20 px-4 py-2 rounded-full">
               <button 
                 onClick={() => setIsModalOpen(true)}
@@ -324,6 +298,10 @@ function UserLines() {
           </div>
         </div>
       )}
+
+      <div className="fixed bottom-4 right-4 z-50">
+        <Singin />
+      </div>
     </motion.div>
   );
 }

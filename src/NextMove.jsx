@@ -11,8 +11,10 @@ import axios from 'axios';
 import { useUser } from './Context/Context.jsx';
 import { toast, ToastContainer } from 'react-toastify'; 
 import 'react-toastify/dist/ReactToastify.css'; 
+import { useNavigate } from 'react-router-dom';
 
 function NextMove() {
+  const navigate = useNavigate();
   const [mood, setMood] = useState('casual');
   const [selectedImage, setSelectedImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -59,10 +61,16 @@ function NextMove() {
   }, []);
 
   const handleImageUpload = async (e) => {
-    if (nextMoveCount <= 0) {
-      toast.error('No next moves left!');
+
+    if(!user){
+      toast.error('Please sign in to use this feature!');
+      setTimeout(() => {
+        navigate('/auth');
+      }, 1000);
       return;
     }
+
+
 
     const file = e.target.files?.[0];
     if (file) {
@@ -177,6 +185,14 @@ function NextMove() {
   async function generateOpeningMove(mood, openingText, userId) {
     if (!openingText.trim()) {
       toast.error('Please enter some text first!');
+      return;
+    }
+
+    if(!user){
+      toast.error('Please sign in to use this feature!');
+      setTimeout(() => {
+        navigate('/auth');
+      }, 1000);
       return;
     }
 
@@ -364,7 +380,7 @@ function NextMove() {
             onChange={(e) => setOpeningText(e.target.value)}
           />}
           {!openingMoveText && !isLoading && <button
-            onClick={() => generateOpeningMove(mood, openingText, user._id)}
+            onClick={() => generateOpeningMove(mood, openingText, user?._id)}
             className="bg-white text-gray-800 px-8 py-3 rounded-full font-semibold flex items-center gap-2 mx-auto transform transition-all hover:scale-105 hover:shadow-md"
             disabled={isLoading}
           >
