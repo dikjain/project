@@ -39,6 +39,7 @@ function Membership() {
       <button onClick={() => { setIsModalOpen(true); generateQRCode(); }} className="absolute top-[-100px] right-[100px] bg-blue-500 text-white py-2 px-4 rounded">
         Buy Membership
       </button>
+      
 
       <AnimatePresence>
         {isModalOpen && (
