@@ -254,7 +254,7 @@ function Home() {
                 <h2 className="text-xl font-semibold mb-4 text-white">Get More Pickup Lines</h2>
                 <p className="mb-4 text-white">Login to get more lines for free!</p>
                 <motion.button
-                  onClick={() => navigate('/')}
+                  onClick={() => navigate('/auth')}
                   className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-3 py-2 font-semibold rounded-lg"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}

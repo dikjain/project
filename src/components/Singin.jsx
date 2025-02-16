@@ -46,7 +46,7 @@ function Singin({ initialOpen = false }) {
               </>
             ) : (
               <>
-                <Link to="/" className="block px-4 w-[140px] py-2 text-white hover:bg-white/40 rounded-md">
+                <Link to="/auth" className="block px-4 w-[140px] py-2 text-white hover:bg-white/40 rounded-md">
                   Login | Signup
                 </Link>
               </>

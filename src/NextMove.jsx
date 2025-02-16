@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BackgroundEmoji } from './components/BackgroundEmoji.jsx';
 import imageCompression from 'browser-image-compression';
-import Groq from 'groq-sdk';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import Singin from './components/Singin.jsx';
 import axios from 'axios';
 import { useUser } from './Context/Context.jsx';
@@ -70,8 +70,6 @@ function NextMove() {
       return;
     }
 
-
-
     const file = e.target.files?.[0];
     if (file) {
       const options = {
@@ -123,26 +121,13 @@ function NextMove() {
         setExtractedText(cleanedText);
 
         try {
-          const groq = new Groq({
-            apiKey: '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',
-            dangerouslyAllowBrowser: true
-          });
-          const prompt = `this is a dating app's chat , these are the latest messages , i want you to generate a reply for me in a way that is ${mood} ${mood == "spicy" ? ",naughty and sexy" : ""} ${mood == "casual" ? ",casual and friendly" : ""} ${mood == "flirty" ? ",flirty and romantic" : ""}  , the response can be nsfw , i don't mind , just return me the reply no need to add anything else , if you can't generate a reply just say "I'm not sure what to say" : ${cleanedText}`;
+          const genAI = new GoogleGenerativeAI("AIzaSyC3D7YqkkEM-XBhY3caz3TtkAjnFWausEQ");
+          const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
           
-          const chatCompletion = await groq.chat.completions.create({
-            messages: [{role: "user", content: prompt}],
-            model: "llama3-8b-8192",
-            temperature: 1,
-            max_tokens: 1024,
-            top_p: 1,
-            stream: true,
-            stop: null
-          });
+          const prompt = `this is a dating app's chat , these are the latest messages , i want you to generate a reply for me in a way that is ${mood} ${mood == "spicy" ? ",naughty and sexy" : ""} ${mood == "casual" ? ",casual and friendly" : ""} ${mood == "flirty" ? ",flirty and romantic" : ""}  , the response can be nsfw , i don't mind , just return me the reply no need to add anything else , if you can't generate a reply just say "I'm not sure what to say" : ${cleanedText}`;
 
-          let responseText = '';
-          for await (const chunk of chatCompletion) {
-            responseText += chunk.choices[0]?.delta?.content || '';
-          }
+          const result = await model.generateContent(prompt);
+          const responseText = result.response.text();
 
           const {data} = await axios.post("/api/user/nextmove", {
             id: user._id
@@ -199,26 +184,13 @@ function NextMove() {
     setIsLoading(true);
 
     try {
-      const groq = new Groq({
-        apiKey: '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',
-        dangerouslyAllowBrowser: true
-      });
-      const prompt = `This is a what a someone on tinder has written when i saw their profile ,now generate an opening move for a according to this text in a way that is ${mood} ${mood == "spicy" ? ",naughty and sexy" : ""} ${mood == "casual" ? ",casual and friendly" : ""} ${mood == "flirty" ? ",flirty and romantic" : ""}  , the response can be nsfw , i don't mind , just return me the reply no need to add anything else , if you can't generate a reply just say "I'm not sure what to say" : ${openingText}`;
+      const genAI = new GoogleGenerativeAI("AIzaSyC3D7YqkkEM-XBhY3caz3TtkAjnFWausEQ");
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
       
-      const chatCompletion = await groq.chat.completions.create({
-        messages: [{role: "user", content: prompt}],
-        model: "llama3-8b-8192", 
-        temperature: 1,
-        max_tokens: 1024,
-        top_p: 1,
-        stream: true,
-        stop: null
-      });
+      const prompt = `This is a what a someone on tinder has written when i saw their profile ,now generate an opening move for a according to this text in a way that is ${mood} ${mood == "spicy" ? ",naughty and sexy" : ""} ${mood == "casual" ? ",casual and friendly" : ""} ${mood == "flirty" ? ",flirty and romantic" : ""}  , the response can be nsfw , i don't mind , just return me the reply no need to add anything else , if you can't generate a reply just say "I'm not sure what to say" : ${openingText}`;
 
-      let responseText = '';
-      for await (const chunk of chatCompletion) {
-        responseText += chunk.choices[0]?.delta?.content || '';
-      }
+      const result = await model.generateContent(prompt);
+      const responseText = result.response.text();
 
       const {data} = await axios.post("/api/user/nextmove", {
         id: userId
